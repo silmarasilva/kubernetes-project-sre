@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-cli
+spec:
+  template:
+    metadata: 
+      name: pod-produtos
+      labels:
+        app: pod-produtos
+    spec:
+      containers:
+        - name: container-pod-produtos
+          image: silmarasilva/apiprodutos
+          ports: 
+            - containerPort: 5300
+          envFrom:
+            - configMapRef:
+                name: configmap-prod
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-produtos

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-cli
+data:
+  MYSQL_ROOT_PASSWORD: "1234"
+  MYSQL_DATABASE: "db_clientes"
+  MYSQL_PASSWORD: "1234"
+
+  # HOST_DB: svc-db-mysql:3308
+  # USER_DB: root
+  # PASS_DB: 1234
+  # DATABASE_DB: db_clientes
+   

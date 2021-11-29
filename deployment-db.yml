@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: deployment-db
+spec: 
+  template:
+    metadata:
+      name: db-mysql
+      labels:
+        app: db-mysql
+    spec:
+      containers: 
+        -name: db-mysql
+        -image: silmarasilva/db_mysql
+        ports:
+          - containerPort: 3308
+        envFrom:
+          - configMapRef:
+              name: configmap-db
+  selector:
+    matchLabels:
+      app: db-mysql
+

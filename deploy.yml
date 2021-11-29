@@ -1,0 +1,77 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-clientes-deployment
+  labels:
+    app: pod-clientes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pod-clientes
+  template:
+    metadata:
+      labels:
+        app: pod-clientes
+    spec:
+      containers:
+        - name: container-pod-clientes
+        image:  silmarasilva/apiclientes
+        ports:
+          - containerPort: 5100
+
+# ---- SERVICE LOAD BALANCER INTERNAL ---------
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    # This annotation is only required if you are creating an internal facing ELB. Remove this annotation to create public facing ELB.
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+  name: internal-api-clientes-service
+  labels:
+    app: pod-clientes
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "http"
+    port: 5100
+    targetPort: 5100
+  selector:
+    app: pod-clientes
+
+# ---- SERVICE LOAD BALANCER EXTERNAL ---------
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-api-clientes-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+spec:
+  selector:
+    app: pod-clientes
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5100
+ 
+
+# ---- INGRESS ---------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+      paths:
+        - path: /clientes
+        pathType: Prefix
+        backend:
+          service:
+            name: external-api-clientes-service
+            port:
+              number: 5100  

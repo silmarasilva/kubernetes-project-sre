@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: pod-produtos
+  labels:
+    app: pod-produtos    
+spec:
+  containers:
+    - name: container-pod-produtos
+      image: silmarasilva/apiprodutos
+      ports:  
+        - containerPort: 5300
+      envFrom:
+        - configMapRef:
+            name: configmap-prod
+
+    

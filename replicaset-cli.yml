@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-cli
+spec:
+  template:
+    metadata: 
+      name: pod-clientes
+      labels:
+        app: pod-clientes
+    spec:
+      containers:
+        - name: container-pod-clientes
+          image: silmarasilva/apiclientes
+          ports: 
+            - containerPort: 5100
+          envFrom:
+            - configMapRef:
+                name: configmap-cli
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-clientes
+

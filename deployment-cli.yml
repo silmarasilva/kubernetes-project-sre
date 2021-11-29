@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-cli
+spec:
+  replica: 3
+  template:
+    metadata: 
+      name: pod-clientes
+      labels:
+        app: pod-clientes
+    spec:
+      containers:
+        - name:  container-pod-clientes
+          image: silmarasilva/apiclientes
+          ports: 
+            - containerPort: 5100
+  selector:
+    matchLabels:
+      app: pod-clientes

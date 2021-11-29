@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-api-clientes-cluster
+spec:
+  type: ClusterIP
+  selector:
+     app: pod-clientes
+  ports:
+    - port: 9000

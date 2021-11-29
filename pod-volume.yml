@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-volume-db
+spec:
+  containers:
+    - name: db-mysql
+      image: silmarasilva/db_mysql
+      volumeMounts:
+        - montPath: /volume-dentro-do-container
+          name: volume-db-mysql
+  volumes:
+    - name: volume-db-mysql
+      hostPath: 
+        path: /mnt/c/Users/Silmara Silva/documents/workspace/kubernetes/project-kubernetes-sre/volume-db-mysql
+      type: DirectoryOrCreate
+
+
+      # Criar a pasta dentro do sistema operacional minikube ssh - sudo mkdir volume-db-mysql. Caso a pasta /mnt/c/Users/Silmara Silva/documents/workspace/kubernetes/project-kubernetes-sre/volume-db-mysql/exista no host, um volume chamado volume-db-mysql será criado e montado na pasta pasta-de-arquivos dentro do container do Pod.
+
+
